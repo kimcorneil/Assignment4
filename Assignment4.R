@@ -13,3 +13,22 @@
 #' Remove sightings that were reported before they happened
 #' Create average report_delay table per country
 #' Create a histogram of the duration per seconds column
+
+###### Assignment ######
+# Load file as data frame
+## For reviewer: ensure ufo_subset.csv is in your working directory 
+ufos <- read.csv("ufo_subset.csv")
+class(ufos)
+
+# View and summarize the data
+# Also check column names
+View(ufos)
+summary(ufos)
+names(ufos)
+## some initial issues: 
+#' datetime and date_posted are character 
+#' duration.hours.min is a mess
+#' some countries missing
+#' zeros in duration.seconds
+
+
