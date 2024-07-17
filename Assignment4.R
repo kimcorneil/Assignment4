@@ -64,3 +64,61 @@ ufos4$time_observed <- hm(ufos4$time_observed)
 View(ufos4)
 summary(ufos4)
 
+# Periods in column names are not the best so replace with underscores
+# duplicate ufos4 and name it ufos5
+ufos5 <- ufos4
+names(ufos5)[names(ufos5) == "duration.seconds"] <- "duration_seconds"
+names(ufos5)[names(ufos5) == "duration.hours.min"] <- "duration_hours_min"
+# View and summarize the data after making changes
+View(ufos5)
+summary(ufos5)
+names(ufos5)
+
+# Change city, state, country, and shape into factors
+# duplicate ufos5 and name it ufos6
+ufos6 <- ufos5
+ufos6$city <- factor(ufos6$city)
+ufos6$state <- factor(ufos6$state)
+ufos6$country <- factor(ufos6$country)
+ufos6$shape <- factor(ufos6$shape)
+# View and summarize the data after making changes
+View(ufos6)
+summary(ufos6)
+
+# Replace empty values with NA in state, country 
+# duplicate ufos6 and name it ufos7
+ufos7 <- ufos6
+# get the levels to know which to replace
+levels(ufos7$country)
+levels(ufos7$state)
+levels(ufos7$shape)
+# replace with NAs
+ufos7$country[ufos7$country == ""] <- NA
+ufos7$state[ufos7$state == ""] <- NA
+ufos7$shape[ufos7$shape == ""] <- NA
+ufos7$shape[ufos7$shape == "unknown"] <- NA
+# drop empty levels
+ufos7$country <- droplevels(ufos7$country)
+ufos7$state <- droplevels(ufos7$state)
+ufos7$shape <- droplevels(ufos7$shape)
+# View and summarize the data after making changes
+View(ufos7)
+summary(ufos7)
+
+# Deal with the craziness that is the city column
+# See why it is crazy by checking the levels
+levels(ufos7$city)
+
+# Fix stuff for duration_seconds
+# Deal with zeros
+# add dplyr to library
+library("dplyr")
+# see zeros
+ufos7 %>% filter(duration_seconds == 0)
+# there are no zeros, lowest value is 0.02
+
+# Remove columns that may be a hoax
+# duplicate ufos7 and name it ufos8
+ufos8 <- ufos7
+ufos8$comments %>% grepl("((HOAX??))")
+ufos8 %>% mutate(comments = case_when(comments == '((HOAX??))'
