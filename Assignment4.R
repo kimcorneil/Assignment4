@@ -120,5 +120,21 @@ ufos7 %>% filter(duration_seconds == 0)
 # Remove columns that may be a hoax
 # duplicate ufos7 and name it ufos8
 ufos8 <- ufos7
-ufos8$comments %>% grepl("((HOAX??))")
-ufos8 %>% mutate(comments = case_when(comments == '((HOAX??))'
+# replace any columns in comments that have ((HOAX??)) with NA
+## use mutate_at to specify only the comments column
+## create an annonymous function using ifelse with the test being to search for ((HOAX??)) with grepl (repturns a logical)
+## if grepl returns true replace it with NA and if grepl returns false leave it
+## use \\ in HOAX to deal with metacharacters
+ufos8 <- ufos8 %>% mutate_at(c("comments"), ~ ifelse(grepl("\\(\\(HOAX\\?\\?\\)\\)", ufos8$comments), NA, ufos8$comments))
+# remove any rows that have na in the comments using tidyr function drop_na()
+ufos8 <- ufos8 %>% drop_na(comments)
+# View and summarize the data after making changes
+View(ufos8)
+summary(ufos8) 
+# compare dimensions with ufos8 and ufos7 to ensure rows were removed
+dim(ufos8)                                      
+dim(ufos7)    
+
+
+
+                                      
