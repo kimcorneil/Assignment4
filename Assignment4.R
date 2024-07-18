@@ -135,6 +135,22 @@ summary(ufos8)
 dim(ufos8)                                      
 dim(ufos7)    
 
+# Create report_delay column which is the delay in days between date_posted and date_observed
+# duplicate ufos8 and name it ufos9
+ufos9 <- ufos8
+# Use mutate to create a new colummn called report_delaye which is date_posted - date_observed
+ufos9 <- ufos9 %>% mutate(ufos9, report_delay = date_posted - date_observed)
+# remove all rows where the number of days is negative using the same method as LINE WHAT KIM FOCUS HERE ##########
+ufos9 <- ufos9 %>% mutate_at(c("report_delay"), ~ifelse(grepl("\\-", report_delay), NA, report_delay))
+# remove any rows that have na in the comments using tidyr function drop_na()
+ufos9 <- ufos9 %>% drop_na(report_delay)
+# View and summarize the data after making changes
+View(ufos9)
+summary(ufos9)    
+# compare dimensions with ufos8 and ufos7 to ensure rows were removed
+dim(ufos8)                                      
+dim(ufos9)  
 
 
-                                      
+
+
