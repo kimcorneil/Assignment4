@@ -151,6 +151,26 @@ summary(ufos9)
 dim(ufos8)                                      
 dim(ufos9)  
 
+# Create a table representing report_delay per country
+table(ufos9$report_delay, ufos9$country)
+
+### DELETE THIS CAUSE I DO NOT KNOW HOW TO EXTRACT JUST THE COUNTRIES
+# fix some NAs in country by using what is in the brackets in city
+# duplicate ufos9 and name it ufos10
+ufos10 <- ufos9
+# make a new column for if there were brackets in city
+ufos10 <- separate(ufos10, city, into = c("city", "brackets"), sep = "\\(")
+# get rid of anything that is not a letter or ) or " "
+ufos10 <- ufos10 %>% mutate_at(c("brackets"), ~ifelse(grepl("[^a-z) ]", brackets), NA, brackets))
+# make brackets a fatcor to view the levels
+ufos10$brackets <- factor(ufos10$brackets)
+levels(ufos10$brackets)
+levels(ufos10$country)
+## IF I CONTINUED I WOULD REPLACE ANY LEVEL IN BRACKETS WITH ie canada) with ca IN COUNTRIES ##
+
+# Create a histogram of duration_seconds
+hist(ufos9$duration_seconds)
+
 
 
 
