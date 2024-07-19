@@ -107,7 +107,7 @@ ufos8 <- ufos7
 ## create an annonymous function using ifelse with the test being to search for ((HOAX??)) with grepl (returns a logical)
 ## if grepl returns true replace it with NA and if grepl returns false leave it
 ## use \\ in HOAX to deal with metacharacters
-ufos8 <- ufos8 %>% mutate_at(c("comments"), ~ ifelse(grepl("\\(\\(HOAX\\?\\?\\)\\)", ufos8$comments), NA, ufos8$comments))
+ufos8 <- ufos8 %>% mutate_at(c("comments"), ~ ifelse(grepl("\\(\\(HOAX\\?\\?\\)\\)", comments), NA, comments))
 # remove any rows that have NA in the comments using tidyr function drop_na()
 ufos8 <- ufos8 %>% drop_na(comments)
 # View and summarize the data after making changes
