@@ -152,10 +152,10 @@ dim(ufos8)
 dim(ufos9)  
 
 # Create a table representing report_delay per country
-table(ufos9$report_delay, ufos9$country)
-as.table(c(ufos9$report_delay, ufos9$country), 2, byrow = T)
-attach(ufos9)
-summarize(AvgDelay = mean(ufos9$report_delay, na.rm = T), ufos9$country)
+mytable <- ufos9 %>% 
+  filter(!is.na(country)) %>%  # remove NAs from country
+  group_by(country) %>% # group by country
+  summarize(AvgDelay = mean(report_delay, na.rm = T)) # get the mean number of days delayed per country 
 
 ### DELETE THIS CAUSE I DO NOT KNOW HOW TO EXTRACT JUST THE COUNTRIES
 # fix some NAs in country by using what is in the brackets in city
@@ -172,9 +172,11 @@ levels(ufos10$country)
 ## IF I CONTINUED I WOULD REPLACE ANY LEVEL IN BRACKETS WITH ie canada) with ca IN COUNTRIES ##
 
 # Create a histogram of duration_seconds
-hist(log10(ufos9$duration_seconds))
-## watch out there are zeros
-## IDK IF THIS IS RIGHT. 
+# remove the zeros (log10(0) is negative infinity)
+ufos9F <- ufos9 %>% filter(duration_seconds > 0)
+# create a histogram using base log10 because the data in duration_seconds spans multiple orders of magnitude and without log10 is grouped into 1 large bin
+hist(log10(ufos9F$duration_seconds), main = "Log Transformed Frequencies of the Duration of UFO Sitings", xlab = "Log Duration (Seconds)", ylab = "Frequency")
+
 
 
 
