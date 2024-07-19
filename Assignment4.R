@@ -153,6 +153,9 @@ dim(ufos9)
 
 # Create a table representing report_delay per country
 table(ufos9$report_delay, ufos9$country)
+as.table(c(ufos9$report_delay, ufos9$country), 2, byrow = T)
+attach(ufos9)
+summarize(AvgDelay = mean(ufos9$report_delay, na.rm = T), ufos9$country)
 
 ### DELETE THIS CAUSE I DO NOT KNOW HOW TO EXTRACT JUST THE COUNTRIES
 # fix some NAs in country by using what is in the brackets in city
@@ -169,8 +172,9 @@ levels(ufos10$country)
 ## IF I CONTINUED I WOULD REPLACE ANY LEVEL IN BRACKETS WITH ie canada) with ca IN COUNTRIES ##
 
 # Create a histogram of duration_seconds
-hist(ufos9$duration_seconds)
-
+hist(log10(ufos9$duration_seconds))
+## watch out there are zeros
+## IDK IF THIS IS RIGHT. 
 
 
 
